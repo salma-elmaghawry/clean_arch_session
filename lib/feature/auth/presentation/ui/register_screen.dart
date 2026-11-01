@@ -1,9 +1,9 @@
-import 'dart:io';
-
-import 'package:clean_arch_session/core/helpers/location_helper.dart';
+import 'package:clean_arch_session/core/helpers/phone_helper.dart';
 import 'package:clean_arch_session/core/routes/routes.dart';
 import 'package:clean_arch_session/core/widgets/app_button.dart';
-import 'package:clean_arch_session/feature/auth/cubit/auth_cubit.dart';
+import 'package:clean_arch_session/core/widgets/location_button.dart';
+import 'package:clean_arch_session/core/widgets/picture_picker.dart';
+import 'package:clean_arch_session/feature/auth/presentation/cubit/auth_cubit.dart';
 import 'package:clean_arch_session/feature/auth/data/register_request_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +26,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _addressController = TextEditingController();
   XFile? _picture;
   Position? _position;
-  bool _isGettingLocation = false;
 
   @override
   void dispose() {
@@ -39,40 +38,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  String get _phoneWithCountryCode {
-    final phone = _phoneController.text.trim();
-    return '+20${phone.startsWith('0') ? phone.substring(1) : phone}';
-  }
-
-  Future<void> _pickPicture() async {
-    final picture = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 1024,
-      imageQuality: 80,
-    );
-    if (picture != null) setState(() => _picture = picture);
-  }
-
-  Future<void> _getLocation() async {
-    setState(() => _isGettingLocation = true);
-    final result = await LocationHelper.getCurrentPosition();
-    if (!mounted) return;
-    setState(() => _isGettingLocation = false);
-    result.fold(
-      (error) => ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(error))),
-      (position) => setState(() => _position = position),
-    );
-  }
-
   void _register() {
     final address = _addressController.text.trim();
     context.read<AuthCubit>().register(
       RegisterRequestBody(
         name: _nameController.text.trim(),
         email: _emailController.text.trim(),
-        phone: _phoneWithCountryCode,
+        phone: PhoneHelper.withCountryCode(_phoneController.text),
         password: _passwordController.text,
         passwordConfirmation: _passwordConfirmationController.text,
         address: address.isEmpty ? null : address,
@@ -101,19 +73,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           return ListView(
             padding: const EdgeInsets.all(24),
             children: [
-              Center(
-                child: GestureDetector(
-                  onTap: _pickPicture,
-                  child: CircleAvatar(
-                    radius: 48,
-                    backgroundImage: _picture != null
-                        ? FileImage(File(_picture!.path))
-                        : null,
-                    child: _picture == null
-                        ? const Icon(Icons.add_a_photo, size: 32)
-                        : null,
-                  ),
-                ),
+              PicturePicker(
+                picture: _picture,
+                onPicked: (picture) => setState(() => _picture = picture),
               ),
               const SizedBox(height: 8),
               Text(
@@ -138,7 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
                   labelText: 'Phone',
-                  prefixText: '+20 ',
+                  prefixText: '${PhoneHelper.countryCode} ',
                   hintText: '01xxxxxxxxx',
                 ),
               ),
@@ -164,28 +126,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 decoration: const InputDecoration(labelText: 'Address'),
               ),
               const SizedBox(height: 16),
-              OutlinedButton.icon(
-                onPressed: _isGettingLocation ? null : _getLocation,
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(48),
-                ),
-                icon: _isGettingLocation
-                    ? const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Icon(
-                        _position == null
-                            ? Icons.my_location
-                            : Icons.check_circle,
-                      ),
-                label: Text(
-                  _position == null
-                      ? 'Use my current location'
-                      : '${_position!.latitude.toStringAsFixed(4)}, '
-                            '${_position!.longitude.toStringAsFixed(4)}',
-                ),
+              LocationButton(
+                latitude: _position?.latitude,
+                longitude: _position?.longitude,
+                onLocated: (position) => setState(() => _position = position),
               ),
               const SizedBox(height: 24),
               AppButton(

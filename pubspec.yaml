@@ -36,7 +36,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   dio: ^5.11.1
   flutter_bloc: ^9.1.1
-  dartz: ^0.10.1
   get_it: ^9.3.0
   flutter_secure_storage: ^11.2.0
   pretty_dio_logger: ^1.4.0
@@ -53,6 +52,18 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+# Run `dart run flutter_launcher_icons` after changing anything here.
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
+  remove_alpha_ios: true
+  adaptive_icon_background: "#673AB7"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  # the foreground image already keeps the cap inside Android's safe zone
+  adaptive_icon_foreground_inset: 0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

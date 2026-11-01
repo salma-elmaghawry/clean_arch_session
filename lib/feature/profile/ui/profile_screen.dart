@@ -1,5 +1,5 @@
 import 'package:clean_arch_session/core/routes/routes.dart';
-import 'package:clean_arch_session/feature/auth/cubit/auth_cubit.dart';
+import 'package:clean_arch_session/feature/auth/presentation/cubit/auth_cubit.dart';
 import 'package:clean_arch_session/feature/profile/cubit/profile_cubit.dart';
 import 'package:clean_arch_session/feature/profile/data/profile_model.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +62,17 @@ class _ProfileDetails extends StatelessWidget {
 
   const _ProfileDetails({required this.profile});
 
+  Future<void> _openEditProfile(BuildContext context) async {
+    final updated = await Navigator.pushNamed(
+      context,
+      Routes.editProfile,
+      arguments: profile,
+    );
+    if (updated == true && context.mounted) {
+      context.read<ProfileCubit>().getProfile();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final picture = profile.pictureUrl;
@@ -78,6 +89,14 @@ class _ProfileDetails extends StatelessWidget {
           profile.name,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 8),
+        Center(
+          child: TextButton.icon(
+            onPressed: () => _openEditProfile(context),
+            icon: const Icon(Icons.edit),
+            label: const Text('Edit profile'),
+          ),
         ),
         const SizedBox(height: 16),
         ListTile(leading: const Icon(Icons.email), title: Text(profile.email)),

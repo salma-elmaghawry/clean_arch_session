@@ -1,5 +1,5 @@
 import 'package:clean_arch_session/core/networking/api_service.dart';
-import 'package:clean_arch_session/feature/auth/cubit/auth_cubit.dart';
+import 'package:clean_arch_session/feature/auth/presentation/cubit/auth_cubit.dart';
 import 'package:clean_arch_session/feature/auth/data/auth_repo.dart';
 import 'package:clean_arch_session/feature/profile/cubit/profile_cubit.dart';
 import 'package:clean_arch_session/feature/profile/data/profile_repo.dart';

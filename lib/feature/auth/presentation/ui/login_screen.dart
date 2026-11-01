@@ -1,6 +1,6 @@
 import 'package:clean_arch_session/core/routes/routes.dart';
 import 'package:clean_arch_session/core/widgets/app_button.dart';
-import 'package:clean_arch_session/feature/auth/cubit/auth_cubit.dart';
+import 'package:clean_arch_session/feature/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
