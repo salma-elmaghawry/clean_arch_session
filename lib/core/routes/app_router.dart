@@ -5,7 +5,7 @@ import 'package:clean_arch_session/feature/auth/presentation/ui/login_screen.dar
 import 'package:clean_arch_session/feature/auth/presentation/ui/otp_screen.dart';
 import 'package:clean_arch_session/feature/auth/presentation/ui/register_screen.dart';
 import 'package:clean_arch_session/feature/profile/cubit/profile_cubit.dart';
-import 'package:clean_arch_session/feature/profile/data/profile_model.dart';
+import 'package:clean_arch_session/feature/profile/domain/entities/profile_entity.dart';
 import 'package:clean_arch_session/feature/profile/ui/edit_profile_screen.dart';
 import 'package:clean_arch_session/feature/profile/ui/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class AppRouter {
           ),
         );
       case Routes.editProfile:
-        final profile = settings.arguments as ProfileModel;
+        final profile = settings.arguments as ProfileEntity;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (_) => getIt<ProfileCubit>(),

@@ -1,30 +1,33 @@
 import 'package:clean_arch_session/core/networking/api_error_handler.dart';
-import 'package:clean_arch_session/feature/profile/data/profile_model.dart';
-import 'package:clean_arch_session/feature/profile/data/profile_repo.dart';
-import 'package:clean_arch_session/feature/profile/data/update_profile_request_body.dart';
+import 'package:clean_arch_session/feature/profile/domain/entities/profile_entity.dart';
+import 'package:clean_arch_session/feature/profile/domain/entities/update_profile_entity.dart';
+import 'package:clean_arch_session/feature/profile/domain/usecases/get_profile_usecase.dart';
+import 'package:clean_arch_session/feature/profile/domain/usecases/update_profile_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  final ProfileRepo _profileRepo;
+  final GetProfileUseCase _getProfileUseCase;
+  final UpdateProfileUseCase _updateProfileUseCase;
 
-  ProfileCubit(this._profileRepo) : super(ProfileInitial());
+  ProfileCubit(this._getProfileUseCase, this._updateProfileUseCase)
+    : super(ProfileInitial());
 
   Future<void> getProfile() async {
     emit(ProfileLoading());
     try {
-      final profile = await _profileRepo.getProfile();
+      final profile = await _getProfileUseCase();
       emit(ProfileSuccess(profile));
     } catch (error) {
       emit(ProfileFailure(ApiErrorHandler.getMessage(error)));
     }
   }
 
-  Future<void> updateProfile(UpdateProfileRequestBody body) async {
+  Future<void> updateProfile(UpdateProfileEntity entity) async {
     emit(ProfileLoading());
     try {
-      final message = await _profileRepo.updateProfile(body);
+      final message = await _updateProfileUseCase(entity);
       emit(ProfileUpdated(message));
     } catch (error) {
       emit(ProfileFailure(ApiErrorHandler.getMessage(error)));

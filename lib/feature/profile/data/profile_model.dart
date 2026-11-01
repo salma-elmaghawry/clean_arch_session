@@ -1,20 +1,14 @@
-class ProfileModel {
-  final String name;
-  final String email;
-  final String phone;
-  final String? address;
-  final double? latitude;
-  final double? longitude;
-  final String? pictureUrl;
+import 'package:clean_arch_session/feature/profile/domain/entities/profile_entity.dart';
 
+class ProfileModel extends ProfileEntity {
   ProfileModel({
-    required this.name,
-    required this.email,
-    required this.phone,
-    this.address,
-    this.latitude,
-    this.longitude,
-    this.pictureUrl,
+    required super.name,
+    required super.email,
+    required super.phone,
+    super.address,
+    super.latitude,
+    super.longitude,
+    super.pictureUrl,
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {

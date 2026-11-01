@@ -7,7 +7,7 @@ class ProfileInitial extends ProfileState {}
 class ProfileLoading extends ProfileState {}
 
 class ProfileSuccess extends ProfileState {
-  final ProfileModel profile;
+  final ProfileEntity profile;
 
   ProfileSuccess(this.profile);
 }

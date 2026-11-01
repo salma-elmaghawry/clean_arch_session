@@ -3,14 +3,14 @@ import 'package:clean_arch_session/core/widgets/app_button.dart';
 import 'package:clean_arch_session/core/widgets/location_button.dart';
 import 'package:clean_arch_session/core/widgets/picture_picker.dart';
 import 'package:clean_arch_session/feature/profile/cubit/profile_cubit.dart';
-import 'package:clean_arch_session/feature/profile/data/profile_model.dart';
-import 'package:clean_arch_session/feature/profile/data/update_profile_request_body.dart';
+import 'package:clean_arch_session/feature/profile/domain/entities/profile_entity.dart';
+import 'package:clean_arch_session/feature/profile/domain/entities/update_profile_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  final ProfileModel profile;
+  final ProfileEntity profile;
 
   const EditProfileScreen({super.key, required this.profile});
 
@@ -45,7 +45,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _save() {
     final address = _addressController.text.trim();
     context.read<ProfileCubit>().updateProfile(
-      UpdateProfileRequestBody(
+      UpdateProfileEntity(
         name: _nameController.text.trim(),
         email: _emailController.text.trim(),
         phone: PhoneHelper.withCountryCode(_phoneController.text),

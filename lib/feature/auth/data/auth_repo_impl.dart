@@ -3,14 +3,15 @@ import 'package:clean_arch_session/core/cache/cache_helper.dart';
 import 'package:clean_arch_session/core/networking/api_constants.dart';
 import 'package:clean_arch_session/core/networking/api_service.dart';
 import 'package:clean_arch_session/feature/auth/data/register_request_body.dart';
+import 'package:clean_arch_session/feature/auth/domain/entities/register_entity.dart';
+import 'package:clean_arch_session/feature/auth/domain/repositories/auth_repo.dart';
 
-class AuthRepo {
+class AuthRepoImpl implements AuthRepo {
   final ApiService _apiService;
 
-  AuthRepo(this._apiService);
+  AuthRepoImpl(this._apiService);
 
-    //<<----      login  ------>>  
-
+  @override
   Future<String> login({
     required String email,
     required String password,
@@ -21,17 +22,17 @@ class AuthRepo {
     );
     return response.data['message'];
   }
-    //<<----      register  ------>>  
 
-  Future<String> register(RegisterRequestBody body) async {
+  @override
+  Future<String> register(RegisterEntity entity) async {
     final response = await _apiService.post(
       ApiConstants.register,
-      data: await body.toFormData(),
+      data: await entity.toFormData(),
     );
     return response.data['message'];
   }
-    //<<----      verifyOtp  ------>>  
 
+  @override
   Future<String> verifyOtp({
     required String email,
     required String otpCode,
@@ -46,7 +47,8 @@ class AuthRepo {
     );
     return response.data['message'];
   }
-    //<<----      resendOtp  ------>>  
+
+  @override
   Future<String> resendOtp({required String email}) async {
     final response = await _apiService.post(
       ApiConstants.resendOtp,
@@ -54,7 +56,8 @@ class AuthRepo {
     );
     return response.data['message'];
   }
-    //<<----      logout  ------>>  
+
+  @override
   Future<String> logout() async {
     try {
       final response = await _apiService.post(ApiConstants.logout);

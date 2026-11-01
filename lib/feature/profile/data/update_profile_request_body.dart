@@ -1,24 +1,9 @@
+import 'package:clean_arch_session/feature/profile/domain/entities/update_profile_entity.dart';
 import 'package:dio/dio.dart';
 
-class UpdateProfileRequestBody {
-  final String name;
-  final String email;
-  final String phone;
-  final String? address;
-  final double? latitude;
-  final double? longitude;
-  final String? picturePath;
-
-  UpdateProfileRequestBody({
-    required this.name,
-    required this.email,
-    required this.phone,
-    this.address,
-    this.latitude,
-    this.longitude,
-    this.picturePath,
-  });
-
+// The domain entity can't know about Dio, so the data layer adds the
+// multipart body the update endpoint expects
+extension UpdateProfileRequestBody on UpdateProfileEntity {
   Future<FormData> toFormData() async {
     return FormData.fromMap({
       // the route is PUT, but PHP only reads multipart bodies (our picture)

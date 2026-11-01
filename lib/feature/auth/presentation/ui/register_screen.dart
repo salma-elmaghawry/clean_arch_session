@@ -4,7 +4,7 @@ import 'package:clean_arch_session/core/widgets/app_button.dart';
 import 'package:clean_arch_session/core/widgets/location_button.dart';
 import 'package:clean_arch_session/core/widgets/picture_picker.dart';
 import 'package:clean_arch_session/feature/auth/presentation/cubit/auth_cubit.dart';
-import 'package:clean_arch_session/feature/auth/data/register_request_body.dart';
+import 'package:clean_arch_session/feature/auth/domain/entities/register_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -41,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _register() {
     final address = _addressController.text.trim();
     context.read<AuthCubit>().register(
-      RegisterRequestBody(
+      RegisterEntity(
         name: _nameController.text.trim(),
         email: _emailController.text.trim(),
         phone: PhoneHelper.withCountryCode(_phoneController.text),

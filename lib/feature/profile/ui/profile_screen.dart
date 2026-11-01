@@ -1,7 +1,7 @@
 import 'package:clean_arch_session/core/routes/routes.dart';
 import 'package:clean_arch_session/feature/auth/presentation/cubit/auth_cubit.dart';
 import 'package:clean_arch_session/feature/profile/cubit/profile_cubit.dart';
-import 'package:clean_arch_session/feature/profile/data/profile_model.dart';
+import 'package:clean_arch_session/feature/profile/domain/entities/profile_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,7 +58,7 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class _ProfileDetails extends StatelessWidget {
-  final ProfileModel profile;
+  final ProfileEntity profile;
 
   const _ProfileDetails({required this.profile});
 

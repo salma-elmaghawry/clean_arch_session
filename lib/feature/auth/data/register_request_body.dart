@@ -1,28 +1,9 @@
+import 'package:clean_arch_session/feature/auth/domain/entities/register_entity.dart';
 import 'package:dio/dio.dart';
 
-class RegisterRequestBody {
-  final String name;
-  final String email;
-  final String phone;
-  final String password;
-  final String passwordConfirmation;
-  final String? address;
-  final double? latitude;
-  final double? longitude;
-  final String? picturePath;
-
-  RegisterRequestBody({
-    required this.name,
-    required this.email,
-    required this.phone,
-    required this.password,
-    required this.passwordConfirmation,
-    this.address,
-    this.latitude,
-    this.longitude,
-    this.picturePath,
-  });
-
+// The domain entity can't know about Dio, so the data layer adds the
+// multipart body the register endpoint expects
+extension RegisterRequestBody on RegisterEntity {
   Future<FormData> toFormData() async {
     return FormData.fromMap({
       'name': name,
